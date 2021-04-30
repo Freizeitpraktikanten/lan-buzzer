@@ -1,0 +1,19 @@
+{
+  "name": "lan-buzzer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Freizeitpraktikanten/lan-buzzer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Freizeitpraktikanten/lan-buzzer/issues"
+  },
+  "homepage": "https://github.com/Freizeitpraktikanten/lan-buzzer#readme"
+}
