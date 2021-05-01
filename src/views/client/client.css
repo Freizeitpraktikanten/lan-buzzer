@@ -1,0 +1,28 @@
+.button {
+  display: flex;
+  width: 90vw;
+  height: 90vw;
+  border-radius: 10%;
+  background-color: green;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (orientation: landscape) {
+  .button {
+    width: 90vw;
+    height: 90vw;
+  }
+}
+
+@media (orientation: landscape) {
+  .button {
+    width: 90vh;
+    height: 90vh;
+  }
+}
+
+
+p.buttonText {
+  font-size: 4rem;
+}
