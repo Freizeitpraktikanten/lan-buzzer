@@ -1,5 +1,5 @@
 const path = require('path');
-const { userHandler, hostHandler } = require('./socket');
+const { clientHandler, hostHandler } = require('./socket');
 
 const express = require('express');
 const app = express();
@@ -24,16 +24,17 @@ app.get('/host', (req, res) => {
 });
 
 // socket communication
-const userNamespace = io.of('/');
+const clientNamespace = io.of('/');
 const hostNamespace = io.of('/host');
 
-userNamespace.on('connection', (socket) => {
-  userHandler(socket, userNamespace);
+clientNamespace.on('connection', (socket) => {
+  clientHandler(socket, clientNamespace, hostNamespace);
 });
 
 hostNamespace.on('connection', (socket) => {
-  hostHandler(socket, hostNamespace);
+  hostHandler(socket, hostNamespace, clientNamespace);
 });
+
 
 
 httpServer.listen(port, () => {
