@@ -20,7 +20,6 @@ module.exports = {
 
     socket.onAny((event, ...args) => {
       console.info(`received ${event}`);
-      console.info('/', clientNamespace.sockets.size);
     });
   },
 
