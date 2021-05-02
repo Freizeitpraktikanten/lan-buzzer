@@ -1,3 +1,4 @@
+/* eslint-disable-next-line no-undef */
 let socket = io('/');
 
 function buzz() {
