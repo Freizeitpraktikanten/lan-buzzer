@@ -6,4 +6,10 @@ function buzz(socket) {
     tok = Date.now();
     console.warn(ack, `${tok - tik}ms`);
   });
+  showRank();
+  window.navigator.vibrate(150); //Vibration - Only on Android
+}
+
+function showRank(){
+  document.getElementById("box").innerText = "Erfolgreich"
 }
