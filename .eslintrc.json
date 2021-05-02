@@ -37,7 +37,11 @@
       }
     ],
     "no-unused-vars": [
-      "warn"
+      "warn",
+      {
+        "args": "after-used",
+        "argsIgnorePattern": "args"
+      }
     ]
   }
 }
