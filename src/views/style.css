@@ -1,0 +1,9 @@
+body {
+  background-color: whitesmoke;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.container {
+  width: 95%;
+  margin: auto;
+}
