@@ -1,4 +1,6 @@
-function buzz(socket) {
+let socket = io('/');
+
+function buzz() {
   console.info('BUZZ!');
   const tik = Date.now();
   let tok = 0;
