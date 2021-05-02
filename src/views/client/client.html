@@ -1,0 +1,30 @@
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>LAN Buzzer</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/style.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/client/client.css'>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>CLIENT</h1>
+      <div
+        class="button"
+        onclick="buzz(socket)">
+        <p class="buttonText">BUZZ</p>
+      </div>
+    </div>
+    </div>
+  </body>
+
+  <script src="/socket.io/socket.io.min.js"></script>
+  <script src="/client/client.js"></script>
+  <script>
+    let socket = io('/');
+  </script>
+
+</html>
