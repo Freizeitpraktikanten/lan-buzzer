@@ -1,6 +1,26 @@
+.welcome {
+  display:flex;
+  align-content: center;
+
+}
+.welcome input{
+  font-size: 2rem;
+  margin-top: 10px;
+  margin-bottom: 25px;
+}
+.submitName{
+  display:flex;
+  font-size: 2rem;
+  text-align: center;
+  width: 80%;
+  justify-content: center;
+  align-self: center;
+  padding: 0;
+}
+
 .button {
   display: flex;
-  border-radius: 50%;
+  border-radius: 100%;
   background-color: red;
   align-items: center;
   justify-content: center;
@@ -10,7 +30,8 @@
   padding-left: 10%;
   padding-right: 10%;
   border:5px  black;
-  transform: scale(1)
+  transform: scale(1);
+  display: none;
 }
 
 .button:active {
@@ -39,6 +60,14 @@
     width:65%;
     height: 15vw;
   }
+  .welcome{
+    width: 100%;
+    font-size: 1.5rem;
+    flex-flow: column nowrap;
+  }
+  .name{
+
+  }
 }
 
 @media (orientation: landscape) {
@@ -57,6 +86,7 @@ box {
   justify-content: center;
   border: 2px solid black;
   align-items: center;
+  display: none;
 }
 
 p.buttonText {
