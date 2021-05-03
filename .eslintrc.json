@@ -1,5 +1,6 @@
 {
   "env": {
+    "browser": true,
     "node": true,
     "commonjs": true,
     "es2021": true
@@ -36,7 +37,11 @@
       }
     ],
     "no-unused-vars": [
-      "warn"
+      "warn",
+      {
+        "args": "after-used",
+        "argsIgnorePattern": "args"
+      }
     ]
   }
 }

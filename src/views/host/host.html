@@ -7,7 +7,6 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='/style.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='/host/host.css'>
-    <script src="/socket.io/socket.io.min.js"></script>
   </head>
 
   <body>
@@ -21,6 +20,11 @@
       <div class="buttons">
         <button>Start New Round</button>
         <button>Reset Current Round</button>
+      </div>
+      <div class="buzz">
+        <p>buzzed players:</p>
+        <ol id="buzzer-list">
+        </ol>
       </div>
     </div>
   </body>

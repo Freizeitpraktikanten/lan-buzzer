@@ -1,11 +1,23 @@
-function buzz(socket) {
+//#region typedefs/const
+
+/**
+ * 
+ */
+const BUZZER_BUTTON = document.querySelector('#buzzer');
+
+//#endregion
+
+/* eslint-disable-next-line no-undef */
+let socket = io('/');
+
+BUZZER_BUTTON.addEventListener('click', (evt) => {
   sendBuzz(socket);
   showRank();
   window.navigator.vibrate(150); //Vibration - Only on Android
-}
+});
 
 function showRank(){
-  document.getElementById("box").innerText = "Erfolgreich"
+  document.getElementById('box').innerText = 'Erfolgreich';
 }
 
 function sendBuzz(socket){
