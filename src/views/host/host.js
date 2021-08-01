@@ -121,19 +121,20 @@ function startNewRound() {
 }
 
 /**
- * Reset current round, notify clients that haven't buzzes yet
+ * Reset current round, notify clients that haven't buzzed yet
  */
 function resetCurrentRound() { }
 
 
 // buzz mock
 (() => {
+  const now = Date.now();
   buzzes.push(...[
-    { id: 'Ricardo', timestamp: 1619987017907 },
-    { id: 'Marcel', timestamp: 1619987017967 },
-    { id: 'Alina', timestamp: 1619987018007 },
-    { id: 'Fabi', timestamp: 1619987018412 },
-    { id: 'Chrissi', timestamp: 1619987017978 }
+    { id: 'Ricardo', timestamp: now + 123 },
+    { id: 'Marcel', timestamp: now + 876 },
+    { id: 'Alina', timestamp: now + 1023 },
+    { id: 'Fabi', timestamp: now + 1458 },
+    { id: 'Chrissi', timestamp: now + 629 }
   ]);
   buzzes.sort((a, b) => a.timestamp - b.timestamp);
   let time = buzzes[0].timestamp;

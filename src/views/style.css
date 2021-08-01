@@ -4,6 +4,6 @@ body {
 }
 
 .container {
-  width: 95%;
+  max-width: 95%;
   margin: auto;
 }
