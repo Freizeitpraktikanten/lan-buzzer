@@ -16,11 +16,11 @@ BUZZER_BUTTON.addEventListener('click', (evt) => {
   window.navigator.vibrate(150); //Vibration - Only on Android
 });
 
-function showRank(){
+function showRank() {
   document.getElementById('box').innerText = 'Erfolgreich';
 }
 
-function sendBuzz(socket){
+function sendBuzz(socket) {
   console.info('BUZZ!');
   const tik = Date.now();
   let tok = 0;
@@ -29,3 +29,10 @@ function sendBuzz(socket){
     console.warn(ack, `${tok - tik}ms`);
   });
 }
+
+/** 
+ * catch any event for debugging purposes
+ */
+socket.onAny((event, ...args) => {
+  console.debug(`received event: ${event}\n`, ...args);
+});
