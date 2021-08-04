@@ -1,9 +1,33 @@
+body {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.buzzer {
+  display: none;
+}
+
 .button {
   display: flex;
-  border-radius: 10%;
-  background-color: green;
   align-items: center;
   justify-content: center;
+  border-radius: 10%;
+  border: 3px solid black;
+  background-color: rgb(0, 128, 0);
+  box-shadow: 0px 0px 5px 3px #666;
+  touch-action: manipulation; /* disable double tap to zoom */
+}
+
+.button:active {
+  box-shadow: 0px 0px 5px 1px #666;
+}
+
+.button:disabled {
+  background-color: rgba(0, 90, 0);
+}
+
+.button:active:disabled {
+  box-shadow: 0px 0px 5px 3px #666;
 }
 
 @media (orientation: portrait) {
@@ -19,7 +43,6 @@
     height: calc(90vh - 40px);
   }
 }
-
 
 p.buttonText {
   font-size: 4rem;

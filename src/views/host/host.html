@@ -5,7 +5,7 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>LAN Buzzer - Host Dashboard</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='/style.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/shared/style.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='/host/host.css'>
   </head>
 
@@ -18,13 +18,18 @@
         </ul>
       </div>
       <div class="buttons">
-        <button>Start New Round</button>
-        <button>Reset Current Round</button>
+        <button
+          onclick="startNewRound()">
+          Start New Round
+        </button>
+        <button
+          onclick="resetCurrentRound()">
+          Reset Current Round
+        </button>
       </div>
       <div class="buzz">
         <p>buzzed players:</p>
-        <ol id="buzzer-list">
-        </ol>
+        <ol id="buzzer-list"></ol>
       </div>
     </div>
   </body>

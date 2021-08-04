@@ -15,7 +15,7 @@ app.use(express.static('src/views'));
 
 // put client here
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views/client/client.html'));
+  res.sendFile(path.join(__dirname, '/views/client/client.html'));
 });
 
 // put host dashboard here
@@ -28,11 +28,11 @@ const clientNamespace = io.of('/');
 const hostNamespace = io.of('/host');
 
 clientNamespace.on('connection', (socket) => {
-  clientHandler(socket, clientNamespace, hostNamespace);
+  clientHandler(socket, hostNamespace);
 });
 
 hostNamespace.on('connection', (socket) => {
-  hostHandler(socket, hostNamespace, clientNamespace);
+  hostHandler(socket, clientNamespace);
 });
 
 

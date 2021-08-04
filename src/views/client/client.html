@@ -5,18 +5,32 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>LAN Buzzer</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='/style.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/shared/style.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='/client/client.css'>
   </head>
 
   <body>
-    <div class="container">
+    <div class="container setup">
+      <h2>Welcome</h2>
+      <label for="playername">Enter your name:</label>
+      <input
+        type="text"
+        name="playername"
+        id="playername">
+      <button
+        onclick="login()">
+        Login
+      </button>
+    </div>
+
+    <div class="container buzzer">
       <h1>CLIENT</h1>
-      <div
+      <button
         class="button"
-        onclick="buzz()">
+        id="buzzer-button"
+        onclick="sendBuzz()">
         <p class="buttonText">BUZZ</p>
-      </div>
+      </button>
     </div>
     </div>
   </body>
