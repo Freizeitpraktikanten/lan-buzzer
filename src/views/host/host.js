@@ -10,12 +10,12 @@
 /**
  * @typedef Buzz
  * @type {object}
- * @property {string} id
+ * @property {string} name
  * @property {number} timestamp
  */
 
 /**
- * Status ENUM
+ * Round status ENUM
  * @readonly
  * @enum {string}
  */
@@ -23,6 +23,16 @@ const ROUND_STATUS = {
   WAITING: 'waiting',
   OPEN: 'open',
   LIMITED: 'limited'
+};
+
+/**
+ * Player status ENUM
+ * @readonly
+ * @enum {number}
+ */
+const PLAYER_STATUS = {
+  DISABLED: 0,
+  ENABLED: 1
 };
 
 /**
@@ -41,7 +51,7 @@ const BUZZER_LIST = document.querySelector('#buzzer-list');
 
 
 // create socket on 'host' namespace
-/* eslint-disable-next-line no-undef */
+/* global io */
 const socket = io('/host');
 
 /** @type {Array<Player>} */
@@ -55,29 +65,35 @@ const buzzes = [];
 let status = ROUND_STATUS.WAITING;
 
 // query for any connected clients on startup
-socket.emit('queryClients', (res) => {
-  console.warn(res);
-  res.forEach(id => {
-    players.push({ name: id, id: id });
-  });
+socket.emit('queryClients');
+
+socket.on('clientConnect', (id) => {
+  console.debug(`${id} connected`);
+});
+
+socket.on('clientDisconnect', (name) => {
+  console.debug(`${name} disconnected`);
+  const userIndex = players.findIndex(p => p.id === name);
+  players.splice(userIndex, 1);
+  refresh();
+});
+
+socket.on('clientLogin', (player) => {
+  console.info(`${player.name} logged in`);
+  players.push({ name: player.name, id: player.id });
+  refresh();
+});
+
+socket.on('buzz', (id) => {
+  const player = players.find(p => p.id === id);
+  console.info(`${player.name} just buzzed`);
+  buzzes.push({ name: player.name, timestamp: Date.now() });
+  socket.emit('updateClient', { id: player.id, status: PLAYER_STATUS.DISABLED });
   refresh();
 });
 
 socket.onAny((event, ...args) => {
-  console.info(`received event: ${event}`);
-});
-
-socket.on('clientConnect', (name) => {
-  console.info(`-> ${name}`);
-  players.push({ name: name, id: name });
-  refresh();
-});
-
-socket.on('clientDisconnect', (name) => {
-  console.info(`-> ${name}`);
-  const userIndex = players.findIndex(p => p.id === name);
-  players.splice(userIndex, 1);
-  refresh();
+  console.debug(`received event: ${event}`, ...args);
 });
 
 /**
@@ -93,10 +109,31 @@ function appendPlayerToList(name, id) {
 }
 
 /**
+ * Add player name to list
+ * @param {string} name
+ * @param {number} deltaT
+ */
+function appendBuzzToList(name, deltaT) {
+  const listEntry = document.createElement('li');
+  listEntry.innerText = `${name} ${deltaT ? '(+' + deltaT + 'ms)' : ''}`.trim();
+  BUZZER_LIST.append(listEntry);
+}
+
+/**
  * Remove all nodes from player list
  */
 function clearPlayerList() {
   PLAYER_LIST.textContent = '';
+}
+
+/**
+ * Remove all nodes from player list
+ */
+function clearBuzzList(clearBuzzArray = false) {
+  if (clearBuzzArray) {
+    buzzes.length = 0;
+  }
+  BUZZER_LIST.textContent = '';
 }
 
 /**
@@ -109,40 +146,27 @@ function refresh() {
     .forEach(({ name, id }) => {
       appendPlayerToList(name, id);
     });
+
+  clearBuzzList();
+  const baseTime = buzzes[0] && buzzes[0].timestamp;
+  buzzes
+    .forEach(buzz => {
+      const timeDiff = buzz.timestamp - baseTime;
+      appendBuzzToList(buzz.name, timeDiff);
+    });
 }
 
 /**
  * Start a new round. Reset all buzzes and notify new round to clients.
  */
 function startNewRound() {
-  BUZZER_LIST.textContent = '';
-  buzzes.length = 0;
+  clearBuzzList(true);
   socket.emit('newRound');
 }
 
 /**
- * Reset current round, notify clients that haven't buzzes yet
+ * Reset current round, notify clients that haven't buzzed yet
  */
-function resetCurrentRound() { }
-
-
-// buzz mock
-(() => {
-  buzzes.push(...[
-    { id: 'Ricardo', timestamp: 1619987017907 },
-    { id: 'Marcel', timestamp: 1619987017967 },
-    { id: 'Alina', timestamp: 1619987018007 },
-    { id: 'Fabi', timestamp: 1619987018412 },
-    { id: 'Chrissi', timestamp: 1619987017978 }
-  ]);
-  buzzes.sort((a, b) => a.timestamp - b.timestamp);
-  let time = buzzes[0].timestamp;
-  buzzes
-    .forEach(buzz => {
-      const listEntry = document.createElement('li');
-      const name = players.find(player => player.id === buzz.id);
-      const timeDiff = buzz.timestamp - time;
-      listEntry.innerText = `${name || buzz.id} ${timeDiff === 0 ? '' : '(+' + timeDiff + 'ms)'}`;
-      BUZZER_LIST.appendChild(listEntry);
-    });
-})();
+function resetCurrentRound() {
+  clearBuzzList(true);
+}
