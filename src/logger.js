@@ -17,25 +17,25 @@ class Logger {
   }
 
   debug(...args) {
-    if (this.LogLevel <= LogLevel.DEBUG) {
+    if (this.logLevel <= LogLevel.DEBUG) {
       console.debug(...args);
     }
   }
 
   info(...args) {
-    if (this.LogLevel <= LogLevel.INFO) {
+    if (this.logLevel <= LogLevel.INFO) {
       console.info(...args);
     }
   }
 
   warn(...args) {
-    if (this.LogLevel <= LogLevel.WARN) {
+    if (this.logLevel <= LogLevel.WARN) {
       console.warn(...args);
     }
   }
 
   error(...args) {
-    if (this.LogLevel <= LogLevel.ERROR) {
+    if (this.logLevel <= LogLevel.ERROR) {
       console.debug(...args);
     }
   }

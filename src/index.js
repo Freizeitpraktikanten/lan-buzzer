@@ -13,12 +13,12 @@ const port = process.env.PORT || 3000;
 app.use(express.static('src/views'));
 
 
-// put client here
+// serve client
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views/client/client.html'));
 });
 
-// put host dashboard here
+// serve host dashboard
 app.get('/host', (req, res) => {
   res.sendFile(path.join(__dirname, '/views/host/host.html'));
 });
@@ -28,11 +28,11 @@ const clientNamespace = io.of('/');
 const hostNamespace = io.of('/host');
 
 clientNamespace.on('connection', (socket) => {
-  clientHandler(socket, clientNamespace, hostNamespace);
+  clientHandler(socket, hostNamespace);
 });
 
 hostNamespace.on('connection', (socket) => {
-  hostHandler(socket, hostNamespace, clientNamespace);
+  hostHandler(socket, clientNamespace);
 });
 
 
