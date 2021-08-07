@@ -14,7 +14,7 @@ const PLAYER_STATUS = {
  * Buzzer button element
  * @type {Node}
  */
-const BUZZER_BUTTON = document.querySelector('#buzzer');
+const BUZZER_BUTTON = document.querySelector('#buzzer-button');
 
 //#endregion
 
@@ -41,11 +41,15 @@ socket.on('queryClients', () => {
 });
 
 /**
- * resend login event when asked to confirm connection
+ * receive status update from host
  */
-socket.on('newRound', () => {
-  playerStatus = PLAYER_STATUS.ENABLED;
+socket.on('updateClient', (newPlayerStatus) => {
+  playerStatus = newPlayerStatus;
   refresh();
+});
+
+socket.onAny((event, ...args) => {
+  console.debug(`received event: ${event}`, ...args);
 });
 
 /**
