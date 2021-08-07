@@ -32,15 +32,37 @@ body {
 
 @media (orientation: portrait) {
   .button {
-    width: 90vw;
-    height: 90vw;
+    /*width: 90vw;*/
+    position: absolute;
+    top: 25%;
+    left:9%;
+    width:85%;
+    height: 85vw;
+  }
+  box{
+    position:absolute;
+    top: 10%;
+    left:19%;
+    width:65%;
+    height: 15vw;
+  }
+  .welcome{
+    width: 100%;
+    font-size: 1.5rem;
+    flex-flow: column nowrap;
+  }
+  .name{
+
   }
 }
 
 @media (orientation: landscape) {
   .button {
-    width: calc(90vh - 40px);
-    height: calc(90vh - 40px);
+    /*width: calc(90vh - 40px);*/
+    position: absolute;
+    left: 25%;
+    width: 33.33%;
+    height: 33.33%/*calc(90vh - 40px);*/
   }
 }
 

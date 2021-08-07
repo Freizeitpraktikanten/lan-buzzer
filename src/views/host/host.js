@@ -93,7 +93,7 @@ socket.on('buzz', (id) => {
 });
 
 socket.onAny((event, ...args) => {
-  console.debug(`received event: ${event}`);
+  console.debug(`received event: ${event}`, ...args);
 });
 
 /**
@@ -111,7 +111,7 @@ function appendPlayerToList(name, id) {
 /**
  * Add player name to list
  * @param {string} name
- * @param {string} id
+ * @param {number} deltaT
  */
 function appendBuzzToList(name, deltaT) {
   const listEntry = document.createElement('li');
@@ -167,30 +167,6 @@ function startNewRound() {
 /**
  * Reset current round, notify clients that haven't buzzed yet
  */
-/* exported resetCurrentRound */
 function resetCurrentRound() {
   clearBuzzList(true);
 }
-
-
-// buzz mock
-(() => {
-  const now = Date.now();
-  buzzes.push(...[
-    { id: 'Ricardo', timestamp: now + 123 },
-    { id: 'Marcel', timestamp: now + 876 },
-    { id: 'Alina', timestamp: now + 1023 },
-    { id: 'Fabi', timestamp: now + 1458 },
-    { id: 'Chrissi', timestamp: now + 629 }
-  ]);
-  buzzes.sort((a, b) => a.timestamp - b.timestamp);
-  let time = buzzes[0].timestamp;
-  buzzes
-    .forEach(buzz => {
-      const listEntry = document.createElement('li');
-      const name = players.find(player => player.id === buzz.id);
-      const timeDiff = buzz.timestamp - time;
-      listEntry.innerText = `${name || buzz.id} ${timeDiff === 0 ? '' : '(+' + timeDiff + 'ms)'}`;
-      BUZZER_LIST.appendChild(listEntry);
-    });
-});

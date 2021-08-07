@@ -14,7 +14,7 @@ const PLAYER_STATUS = {
  * Buzzer button element
  * @type {Node}
  */
-const BUZZER_BUTTON = document.querySelector('#buzzer-button');
+const BUZZER_BUTTON = document.querySelector('#buzzer');
 
 //#endregion
 

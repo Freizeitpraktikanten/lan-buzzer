@@ -40,7 +40,7 @@
       }
     ],
     "no-unused-vars": [
-      "warn",
+      "off",
       {
         "args": "after-used",
         "argsIgnorePattern": "args"

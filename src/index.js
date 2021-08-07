@@ -13,12 +13,12 @@ const port = process.env.PORT || 3000;
 app.use(express.static('src/views'));
 
 
-// put client here
+// serve client
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/views/client/client.html'));
 });
 
-// put host dashboard here
+// serve host dashboard
 app.get('/host', (req, res) => {
   res.sendFile(path.join(__dirname, '/views/host/host.html'));
 });
