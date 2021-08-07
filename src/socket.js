@@ -1,4 +1,5 @@
 const { LogLevel, Logger } = require('./logger');
+const { networkInterfaces } = require('os');
 
 //#region typedefs
 
@@ -99,9 +100,11 @@ module.exports = {
     /**
      * udpate a single clients player status
      */
-    socket.on('updateClient', ({ clientId, playerStatus }) => {
-      const client = clientNamespace.sockets.get(clientId);
-      client.emit('updateClient', playerStatus);
+    // socket.on('updateClient', ({ clientId, playerStatus }) => {
+    socket.on('updateClient', (payload) => {
+      logger.debug(payload);
+      const client = clientNamespace.sockets.get(payload.id);
+      client.emit('updateClient', payload.status);
     });
 
     /**
@@ -109,6 +112,28 @@ module.exports = {
      */
     socket.on('newRound', () => {
       clientNamespace.emit('updateClient', PLAYER_STATUS.ENABLED);
+    });
+
+    /**
+     * get local IP form server (assuming same machine as host)
+     */
+    socket.on('getServerIP', (ack) => {
+      const interfaces = networkInterfaces();
+      let allInterfaces = [];
+      Object.keys(interfaces).forEach(key => {
+        allInterfaces = allInterfaces.concat(interfaces[key]);
+      });
+      let localIP = null;
+      try {
+        localIP = allInterfaces
+          .filter(interface => interface.family === 'IPv4')
+          .filter(interface => interface.internal === false)
+          .shift()
+          .address;
+      } catch (e) {
+        logger.error(e);
+      }
+      ack(localIP);
     });
 
     /** 

@@ -88,7 +88,9 @@ socket.on('buzz', (id) => {
   const player = players.find(p => p.id === id);
   console.info(`${player.name} just buzzed`);
   buzzes.push({ name: player.name, timestamp: Date.now() });
-  socket.emit('updateClient', { id: player.id, status: PLAYER_STATUS.DISABLED });
+  const payload = { id: player.id, status: PLAYER_STATUS.DISABLED };
+  console.debug(payload);
+  socket.emit('updateClient', payload);
   refresh();
 });
 
@@ -169,4 +171,13 @@ function startNewRound() {
  */
 function resetCurrentRound() {
   clearBuzzList(true);
+}
+
+/**
+ * request local IP from server
+ */
+function getServerIP() {
+  socket.emit('getServerIP', (ip) => {
+    console.debug(ip);
+  });
 }

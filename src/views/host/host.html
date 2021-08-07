@@ -12,11 +12,7 @@
   <body>
     <div class="container">
       <h1>HOST</h1>
-      <div class="players">
-        <p>connected players:</p>
-        <ul id="player-list">
-        </ul>
-      </div>
+
       <div class="buttons">
         <button
           onclick="startNewRound()">
@@ -26,11 +22,24 @@
           onclick="resetCurrentRound()">
           Reset Current Round
         </button>
+        <button
+          onclick="getServerIP()">
+          getServerIP
+        </button>
       </div>
+
+      <div class="players">
+        <details>
+          <summary>connected players</summary>
+          <ul id="player-list"></ul>
+        </details>
+      </div>
+
       <div class="buzz">
         <p>buzzed players:</p>
         <ol id="buzzer-list"></ol>
       </div>
+
     </div>
   </body>
 
