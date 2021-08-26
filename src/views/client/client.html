@@ -19,10 +19,11 @@
         <label for="name">
           Bitte Name eingeben.
         </label>
-        <input type="text" name="name">
+        <input type="text" id="playerName">
         <button 
           class="submitName"
-          id="submitName">
+          id="submitName"
+          onclick="setName(socket)">
           Submit
         </button>
       </div>
@@ -32,13 +33,17 @@
       <button
         class="button"
         id="buzzer"
-        ontouchstart="">
-        <p class="buttonText">BUZZ</p>
+        ontouchstart=""
+        onclick="buzz(socket)">
       </button>
     </div>
   </body>
 
   <script src="/socket.io/socket.io.min.js"></script>
   <script src="/client/client.js"></script>
+
+  <script>
+    let socket = io('/');
+  </script>
 
 </html>
