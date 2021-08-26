@@ -99,9 +99,13 @@ module.exports = {
     /**
      * udpate a single clients player status
      */
-    socket.on('updateClient', ({ clientId, playerStatus }) => {
+    /*socket.on('updateClient', ({ clientId, playerStatus }) => {
       const client = clientNamespace.sockets.get(clientId);
-      client.emit('updateClient', playerStatus);
+      client.emit('updateClient', playerStatus);*/
+    socket.on('updateClient', (payload) => {
+      logger.debug(payload);
+      const client = clientNamespace.sockets.get(payload.id);
+      client.emit('updateClient', payload.status);
     });
 
     /**
