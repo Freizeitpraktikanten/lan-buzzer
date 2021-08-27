@@ -1,16 +1,40 @@
-<!DOCTYPE html>
 <html>
-<head>
-  <meta charset='utf-8'>
-  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-  <title>LAN Buzzer - Host Dashboard</title>
-  <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <link rel='stylesheet' type='text/css' media='screen' href='../style.css'>
-  <link rel='stylesheet' type='text/css' media='screen' href='host.css'>
-</head>
-<body>
-  <div class="container">
-    <h1>HOST</h1>
-  </div>
-</body>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>LAN Buzzer - Host Dashboard</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/style.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/host/host.css'>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>HOST</h1>
+      <div class="players">
+        <p>connected players:</p>
+        <ul id="player-list">
+        </ul>
+      </div>
+      <div class="buttons">
+        <button
+          onclick="startNewRound()">
+          Start New Round
+        </button>
+        <button
+          onclick="resetCurrentRound()">
+          Reset Current Round
+        </button>
+      </div>
+      <div class="buzz">
+        <p>buzzed players:</p>
+        <ol id="buzzer-list"></ol>
+      </div>
+    </div>
+  </body>
+
+  <script src="/socket.io/socket.io.min.js"></script>
+  <script src="/host/host.js"></script>
+
 </html>

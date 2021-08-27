@@ -1,8 +1,9 @@
 body {
   background-color: whitesmoke;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .container {
-  width: 85%;
+  width: 95%;
   margin: auto;
 }

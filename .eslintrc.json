@@ -1,5 +1,6 @@
 {
   "env": {
+    "browser": true,
     "node": true,
     "commonjs": true,
     "es2021": true
@@ -11,7 +12,10 @@
   "rules": {
     "indent": [
       "warn",
-      2
+      2,
+      {
+        "SwitchCase": 1
+      }
     ],
     "linebreak-style": [
       "warn",
@@ -33,6 +37,13 @@
       "error",
       {
         "properties": "always"
+      }
+    ],
+    "no-unused-vars": [
+      "off",
+      {
+        "args": "after-used",
+        "argsIgnorePattern": "args"
       }
     ]
   }
