@@ -1,4 +1,5 @@
 const { LogLevel, Logger } = require('./logger');
+const { networkInterfaces } = require('os');
 
 //#region typedefs
 
@@ -71,6 +72,14 @@ module.exports = {
       hostNamespace.emit('buzz', client.id);
     });
 
+    /**
+     * Forward input from client to host
+     */
+    socket.on('message', (text) => {
+      logger.info('Client sent text!', client.name, text);
+      hostNamespace.emit('message', client.id, text);
+    });
+
     /** 
      * catch any event for debugging purposes
      */
@@ -97,18 +106,49 @@ module.exports = {
     });
 
     /**
+     * request login confirmation from connected clients
+     */
+    socket.on('getClient', (id) => {
+      const client = clientNamespace.sockets.get(id);
+      client.emit('queryClients');
+    });
+
+    /**
      * udpate a single clients player status
      */
-    socket.on('updateClient', ({ clientId, playerStatus }) => {
-      const client = clientNamespace.sockets.get(clientId);
-      client.emit('updateClient', playerStatus);
+    socket.on('updateClient', (payload) => {
+      logger.debug(payload);
+      const client = clientNamespace.sockets.get(payload.id);
+      client.emit('updateClient', { status: payload.status, mode: payload.mode, position: payload.position });
     });
 
     /**
      * reset all clients
      */
-    socket.on('newRound', () => {
-      clientNamespace.emit('updateClient', PLAYER_STATUS.ENABLED);
+    socket.on('newRound', (gameMode) => {
+      clientNamespace.emit('updateClient', { status: PLAYER_STATUS.ENABLED, mode: gameMode });
+    });
+
+    /**
+     * get local IP form server (assuming same machine as host)
+     */
+    socket.on('getServerIP', (ack) => {
+      const interfaces = networkInterfaces();
+      let allInterfaces = [];
+      Object.keys(interfaces).forEach(key => {
+        allInterfaces = allInterfaces.concat(interfaces[key]);
+      });
+      let localIP = null;
+      try {
+        localIP = allInterfaces
+          .filter(interface => interface.family === 'IPv4')
+          .filter(interface => interface.internal === false)
+          .shift()
+          .address;
+      } catch (e) {
+        logger.error(e);
+      }
+      ack(localIP);
     });
 
     /** 

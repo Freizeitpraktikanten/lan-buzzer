@@ -8,9 +8,10 @@
  */
 
 /**
- * @typedef Buzz
+ * @typedef Reaction
  * @type {object}
  * @property {string} name
+ * @property {string} text
  * @property {number} timestamp
  */
 
@@ -36,6 +37,16 @@ const PLAYER_STATUS = {
 };
 
 /**
+ * Game mode ENUM
+ * @readonly
+ * @enum {number}
+ */
+const GAME_MODE = {
+  BUZZER: 0,
+  INPUT: 1
+};
+
+/**
  * Player list element
  * @type {Node}
  */
@@ -58,17 +69,23 @@ const socket = io('/host');
 const players = [];
 
 /** @type {Array<Buzz>} */
-const buzzes = [];
+const reactions = [];
 
 
 /** @type {ROUND_STATUS} */
 let status = ROUND_STATUS.WAITING;
 
+/** @type {GAME_MODE} */
+let gameMode = GAME_MODE.BUZZER;
+
 // query for any connected clients on startup
 socket.emit('queryClients');
+// get servers local IP address
+socket.emit('getServerIP', (ip) => document.querySelector('#ipContainer').innerText = `${ip}:3000`);
 
 socket.on('clientConnect', (id) => {
   console.debug(`${id} connected`);
+  socket.emit('getClient', id);
 });
 
 socket.on('clientDisconnect', (name) => {
@@ -81,14 +98,23 @@ socket.on('clientDisconnect', (name) => {
 socket.on('clientLogin', (player) => {
   console.info(`${player.name} logged in`);
   players.push({ name: player.name, id: player.id });
+  socket.emit('updateClient', { id: player.id, status: PLAYER_STATUS.DISABLED, mode: gameMode });
   refresh();
 });
 
 socket.on('buzz', (id) => {
   const player = players.find(p => p.id === id);
   console.info(`${player.name} just buzzed`);
-  buzzes.push({ name: player.name, timestamp: Date.now() });
-  socket.emit('updateClient', { id: player.id, status: PLAYER_STATUS.DISABLED });
+  reactions.push({ name: player.name, timestamp: Date.now(), text: null });
+  socket.emit('updateClient', { id: player.id, status: PLAYER_STATUS.DISABLED, mode: gameMode, position: reactions.length });
+  refresh();
+});
+
+socket.on('message', (id, text) => {
+  const player = players.find(p => p.id === id);
+  console.info(`${player.name} just submitted an answer`);
+  reactions.push({ name: player.name, timestamp: Date.now(), text: text });
+  socket.emit('updateClient', { id: player.id, status: PLAYER_STATUS.DISABLED, mode: gameMode });
   refresh();
 });
 
@@ -110,12 +136,14 @@ function appendPlayerToList(name, id) {
 
 /**
  * Add player name to list
- * @param {string} name
+ * @param {Reaction} reaction
  * @param {number} deltaT
  */
-function appendBuzzToList(name, deltaT) {
+function appendBuzzToList(reaction, deltaT) {
   const listEntry = document.createElement('li');
-  listEntry.innerText = `${name} ${deltaT ? '(+' + deltaT + 'ms)' : ''}`.trim();
+  const hasText = !!reaction.text;
+  const time = `${deltaT ? '(+' + deltaT + 'ms)' : ''}`;
+  listEntry.innerText = `${reaction.name} ${hasText ? '\n' + reaction.text : time}`.trim();
   BUZZER_LIST.append(listEntry);
 }
 
@@ -131,7 +159,7 @@ function clearPlayerList() {
  */
 function clearBuzzList(clearBuzzArray = false) {
   if (clearBuzzArray) {
-    buzzes.length = 0;
+    reactions.length = 0;
   }
   BUZZER_LIST.textContent = '';
 }
@@ -148,11 +176,11 @@ function refresh() {
     });
 
   clearBuzzList();
-  const baseTime = buzzes[0] && buzzes[0].timestamp;
-  buzzes
-    .forEach(buzz => {
-      const timeDiff = buzz.timestamp - baseTime;
-      appendBuzzToList(buzz.name, timeDiff);
+  const baseTime = reactions[0] && reactions[0].timestamp;
+  reactions
+    .forEach(reaction => {
+      const timeDiff = reaction.timestamp - baseTime;
+      appendBuzzToList(reaction, timeDiff);
     });
 }
 
@@ -161,12 +189,25 @@ function refresh() {
  */
 function startNewRound() {
   clearBuzzList(true);
-  socket.emit('newRound');
+  socket.emit('newRound', gameMode);
 }
 
 /**
- * Reset current round, notify clients that haven't buzzed yet
+ * Reset current round, clear reaction list, leave buzzed players disabled
  */
 function resetCurrentRound() {
   clearBuzzList(true);
+}
+
+function switchMode() {
+  switch (gameMode) {
+    case GAME_MODE.BUZZER:
+      gameMode = GAME_MODE.INPUT;
+      break;
+    case GAME_MODE.INPUT:
+      gameMode = GAME_MODE.BUZZER;
+      break;
+  }
+  socket.emit('newRound', gameMode);
+  document.querySelector('#modeSwitcher').innerText = `Switch Mode to ${gameMode === GAME_MODE.BUZZER ? 'INPUT' : 'BUZZER'}`;
 }
