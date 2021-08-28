@@ -1,8 +1,11 @@
+body {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 .welcome {
   display:flex;
   align-content: center;
-  display: none;
-
 }
 .welcome input{
   font-size: 2rem;
@@ -17,18 +20,20 @@
   justify-content: center;
   align-self: center;
   padding: 0;
-  display: none;
 }
 
 .answerMode {
   display:flex;
   align-content: center;
-  
+  visibility: hidden;
 }
+
 .answerMode textarea{
   font-size: 2rem;
   margin-top: 10px;
   margin-bottom: 25px;
+  -webkit-user-select:text;
+  user-select: text;
 }
 
 .submitAnswer{
@@ -39,6 +44,10 @@
   justify-content: center;
   align-self: center;
   padding: 0;
+}
+
+.buzz {
+  visibility: hidden;
 }
 
 .button {
@@ -52,7 +61,7 @@
   box-shadow: 0px 0px 8px 15px rgba(0,0,0,0.2), 0 0px 20px 5px rgba(0,0,0,0.19);
   padding: 10%;
   transform: scale(1);
-  display: none;
+  touch-action: manipulation;
 }
 
 .button:active {
@@ -73,6 +82,15 @@
   -ms-transform: scale(1);
   -webkit-transform: scale(1);
   transform:scale(1);
+}
+
+box {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+  align-items: center;
+  font-size: 2rem;
 }
 
 @media (orientation: portrait) {
@@ -114,15 +132,6 @@
     width: 33.33%;
     height: 33.33%/*calc(90vh - 40px);*/
   }
-}
-
-box {
-  display:flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid black;
-  align-items: center;
-  display: none;
 }
 
 p.buttonText {
