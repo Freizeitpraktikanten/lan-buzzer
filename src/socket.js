@@ -120,13 +120,6 @@ module.exports = {
       clientNamespace.emit('updateClient', { status: PLAYER_STATUS.ENABLED, mode: gameMode });
     });
 
-    /**
-     * update game mode for all clients
-     */
-    socket.on('updateGameMode', (gameMode) => {
-      clientNamespace.emit('updateClient', { status: PLAYER_STATUS.ENABLED, mode: gameMode });
-    });
-
     /** 
      * catch any event for debugging purposes
      */
