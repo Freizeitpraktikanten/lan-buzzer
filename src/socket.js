@@ -110,7 +110,7 @@ module.exports = {
     socket.on('updateClient', (payload) => {
       logger.debug(payload);
       const client = clientNamespace.sockets.get(payload.id);
-      client.emit('updateClient', { status: payload.status, mode: payload.mode });
+      client.emit('updateClient', { status: payload.status, mode: payload.mode, position: payload.position });
     });
 
     /**
