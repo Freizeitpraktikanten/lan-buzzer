@@ -103,7 +103,7 @@ socket.on('buzz', (id) => {
   const player = players.find(p => p.id === id);
   console.info(`${player.name} just buzzed`);
   reactions.push({ name: player.name, timestamp: Date.now(), text: null });
-  socket.emit('updateClient', { id: player.id, status: PLAYER_STATUS.DISABLED, mode: gameMode });
+  socket.emit('updateClient', { id: player.id, status: PLAYER_STATUS.DISABLED, mode: gameMode, position: reactions.length });
   refresh();
 });
 
