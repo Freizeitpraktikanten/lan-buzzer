@@ -90,7 +90,7 @@ box {
   justify-content: center;
   border: 2px solid black;
   align-items: center;
-  font-size: 2rem;
+  font-size: 1.8rem;
 }
 
 @media (orientation: portrait) {
@@ -98,7 +98,7 @@ box {
     /*width: 90vw;*/
     position: absolute;
     top: 25%;
-    left:9%;
+    left:7.5%;
     width:85%;
     height: 85vw;
   }

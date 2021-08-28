@@ -30,14 +30,15 @@ let position = 0;
 let player = '';
 
 socket.on('queryClients', () => {
-  socket.emit('login', player, () => { });
+  if (player) { socket.emit('login', player, () => { }); }
 });
 
 socket.on('updateClient', (payload) => {
-  console.info(payload.status + ' ' + payload.mode);
+  console.info(payload.status + ' ' + payload.mode + ' ' + payload.position);
   playerStatus = payload.status;
   roundMode = payload.mode;
   position = payload.position;
+  showRank();
   refresh();
 });
 
@@ -65,14 +66,13 @@ function showAnswerMode() {
 function buzz() {
   if (playerStatus) {
     sendBuzz();
-    showRank();
     if (navigator.vibrate) { navigator.vibrate(150); } //Vibration - Only on Android
     refresh();
   }
 }
 
 function showRank() {
-  STATUS_BOX.innerText =  position+'.';
+  STATUS_BOX.innerText = position ? position + '.' : 'Warten auf Host';
 }
 
 function submitAnswer() {
@@ -104,6 +104,7 @@ function refresh() {
       ANSWER_SUBMIT.disabled = false;
       ANSWER_LABEL.innerText = 'Bitte Antwort eingeben';
       ANSWER_BOX.value = '';
+      STATUS_BOX.innerText = 'Let\'s buzz it';
       break;
     case PLAYER_STATUS.DISABLED:
       /*document.getElementById('buzzer').style.backgroundColor='grey';*/
