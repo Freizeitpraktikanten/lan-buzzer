@@ -95,6 +95,7 @@ socket.on('clientDisconnect', (name) => {
 socket.on('clientLogin', (player) => {
   console.info(`${player.name} logged in`);
   players.push({ name: player.name, id: player.id });
+  socket.emit('updateClient', { id: player.id, status: PLAYER_STATUS.DISABLED, mode: gameMode });
   refresh();
 });
 
@@ -189,7 +190,7 @@ function startNewRound() {
 }
 
 /**
- * Reset current round, notify clients that haven't buzzed yet
+ * Reset current round, clear reaction list, leave buzzed players disabled
  */
 function resetCurrentRound() {
   clearBuzzList(true);
@@ -204,6 +205,6 @@ function switchMode() {
       gameMode = GAME_MODE.BUZZER;
       break;
   }
-  socket.emit('updateGameMode', gameMode);
+  socket.emit('newRound', gameMode);
   document.querySelector('#modeSwitcher').innerText = `Switch Mode to ${gameMode === GAME_MODE.BUZZER ? 'INPUT' : 'BUZZER'}`;
 }
