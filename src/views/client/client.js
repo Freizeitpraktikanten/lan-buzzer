@@ -3,7 +3,16 @@
 /**
  * 
  */
-/*const BUZZER_BUTTON = document.querySelector('#buzzer');*/
+const BUZZER_BUTTON = document.getElementById('buzzer');
+const WELCOME_PAGE = document.getElementById('welcome');
+const STATUS_BOX = document.getElementById('box');
+const ANSWER_LABEL = document.getElementById('answerModeLabel');
+const ANSWER_BOX = document.getElementById('answer');
+const ANSWER_SUBMIT = document.getElementById('submitAnswer');
+const ROUND_MODE = {
+  BUZZER: 0,
+  INPUT: 1
+};
 const PLAYER_STATUS = {
   DISABLED: 0,
   ENABLED: 1
@@ -14,24 +23,20 @@ const PLAYER_STATUS = {
 /* eslint-disable-next-line no-undef */
 let socket = io('/');
 let playerStatus = PLAYER_STATUS.ENABLED;
+let roundMode = ROUND_MODE.BUZZER;
 let player='';
-
-/*BUZZER_BUTTON.addEventListener('click', (evt) => {
-  sendBuzz(socket);
-  showRank();
-  window.navigator.vibrate(150); //Vibration - Only on An,droid
-});*/
 
 socket.on('queryClients', () => {
   socket.emit('login', player, () => { });
 });
 
-socket.on('updateClient',(newPlayerStatus) => {
-  playerStatus=newPlayerStatus;
+socket.on('updateClient',(payload) => {
+  playerStatus=payload.status;
+  roundMode=payload.mode;
   refresh();
 });
 
-function setName(socket) {
+function setName() {
   player=document.getElementById('playerName').value;
   console.info(player+' logged in');
   socket.emit('login', player, (ack) => {
@@ -41,48 +46,69 @@ function setName(socket) {
   showBuzzer();
 }
 function showBuzzer() {
-  document.getElementById('welcome').style.display='none';
-  document.getElementById('buzzer').style.display='flex';
-  document.getElementById('box').style.display='flex';
+  WELCOME_PAGE.style.display='none';
+  BUZZER_BUTTON.style.display='flex';
+  STATUS_BOX.style.display='flex';
 }
 
-function buzz(socket) {
-  sendBuzz(socket);
+function showAnswerMode() {
+  BUZZER_BUTTON.style.display='none';
+  ANSWER_BOX.style.display='flex';
+  ANSWER_SUBMIT.style.display='flex';
+}
+
+function buzz() {
+  sendBuzz();
   showRank();
-  window.navigator.vibrate(150); //Vibration - Only on Android
+  if (navigator.vibrate) {navigator.vibrate(150);} //Vibration - Only on Android
+  refresh();
 }
 
 function showRank(status) {
-  
-  document.getElementById('box').innerText = 'Status: '+playerStatus;
+  STATUS_BOX.innerText = 'Status: '+playerStatus;
 }
 
-function sendBuzz(socket) {
+function submitAnswer() {
+  if (ANSWER_BOX.value.length>0) {
+    sendAnswer();
+    refresh();
+  }else{
+    ANSWER_LABEL.innerText='Keine leeren Antworten erlaubt';
+  }
+}
+function sendBuzz() {
   if (playerStatus){
     console.info('BUZZ!');
-    const tik = Date.now();
-    let tok = 0;
     socket.emit('buzz', (newPlayerStatus) => {
       playerStatus=newPlayerStatus;
-      tok = Date.now();
-      console.info(`${tok - tik}ms`);
     });
-    /*document.getElementById('buzzer').style.transform = 'scale(1)';*/
-    refresh();
   }
+}
+function sendAnswer(){
+  console.info('Submitted');
+  socket.emit('message', (newPlayerStatus) => {
+    playerStatus=newPlayerStatus;
+  });
+  playerStatus=PLAYER_STATUS.DISABLED;
 }
 
 function refresh() {
   switch(playerStatus) {
     case PLAYER_STATUS.ENABLED:
       /*document.getElementById('buzzer').style.backgroundColor='red';*/
-      document.getElementById('buzzer').textContent='BUZZ';
-      document.getElementById('buzzer').disabled = false;
+      BUZZER_BUTTON.textContent='BUZZ';
+      BUZZER_BUTTON.disabled = false;
+      ANSWER_BOX.disabled = false;
+      ANSWER_SUBMIT.disabled = false;
+      ANSWER_LABEL.innerText='Bitte Antwort eingeben';
       break;
     case PLAYER_STATUS.DISABLED:
       /*document.getElementById('buzzer').style.backgroundColor='grey';*/
-      document.getElementById('buzzer').textContent='WAIT';
-      document.getElementById('buzzer').disabled = true;
+      BUZZER_BUTTON.textContent='WAIT';
+      BUZZER_BUTTON.disabled = true;
+      ANSWER_BOX.disabled = true;
+      ANSWER_SUBMIT.disabled = true;
+      ANSWER_LABEL.innerText='Antwort gesendet.';
       break;
   } 
 }
