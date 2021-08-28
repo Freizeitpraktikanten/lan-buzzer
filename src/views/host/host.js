@@ -80,9 +80,12 @@ let gameMode = GAME_MODE.BUZZER;
 
 // query for any connected clients on startup
 socket.emit('queryClients');
+// get servers local IP address
+socket.emit('getServerIP', (ip) => document.querySelector('#ipContainer').innerText = `${ip}:3000`);
 
 socket.on('clientConnect', (id) => {
   console.debug(`${id} connected`);
+  socket.emit('getClient', id);
 });
 
 socket.on('clientDisconnect', (name) => {
