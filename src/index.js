@@ -6,8 +6,17 @@ const app = express();
 const httpServer = require('http').createServer(app);
 const io = require('socket.io')(httpServer);
 
+process.argv.forEach((value, idx) => {
+  console.log(idx, value);
+});
+const args = process.argv;
+let port = process.env.PORT || 80;
 
-const port = process.env.PORT || 3000;
+if (args.length >= 3 && args[2].startsWith('port')) {
+  const customPort = args[2].split('=').pop();
+  port = !isNaN(customPort) ? customPort : port;
+}
+
 
 // serve static content
 app.use(express.static('src/views'));
