@@ -1,0 +1,80 @@
+h1 {
+  margin: 0.25rem 0;
+  text-align: center;
+}
+
+p {
+  margin: 0.5rem 0;
+}
+
+#ipContainer {
+  font-size: 1.25rem;
+}
+
+.container {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  height: calc(100% - (47px));
+}
+
+.player-info {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.players {
+  margin: 0.5rem 0;
+}
+
+.reactions {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+ol > li {
+  margin-bottom: 0.5rem;
+  padding-right: 8px;
+}
+
+.buttons {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+  order: -1;
+  margin: 1rem 0;
+}
+
+button {
+  font-size: 1rem;
+  height: 2.25rem;
+  border: 2px solid black;
+  border-radius: 5px;
+  box-shadow: 3px 3px 3px 0px #00000040;
+}
+
+.blur {
+  filter: blur(4px);
+  /* padding-right: 5px; */
+}
+
+@media (orientation: portrait) and (max-width: 768px) {
+  .container {
+    justify-content: space-between;
+    align-items: stretch;
+  }
+
+  .player-info {
+    align-items: stretch;
+  }
+
+  .buttons {
+    flex-flow: column nowrap;
+    gap: 10px;
+    order: 0;
+    margin-bottom: 0px;
+  }
+}

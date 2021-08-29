@@ -10,18 +10,27 @@
   </head>
 
   <body>
+    <h1>FZPT Buzzer</h1>
     <div class="container">
-      <h1>HOST</h1>
-      <div>
-        <details>
-          <summary>IP</summary>
-         <span id="ipContainer">loading...</span>
-        </details>
-      </div>
-      <div class="players">
-        <p>connected players:</p>
-        <ul id="player-list">
-        </ul>
+      <div class="player-info">
+        <div>
+          <p>Connect to: <code id="ipContainer">loading...</code></p>
+        </div>
+
+        <div class="players">
+          <details>
+            <summary>
+              connected players: (<span id="player-summary">0</span>)
+            </summary>
+            <ul id="player-list">
+            </ul>
+          </details>
+        </div>
+
+        <div class="reactions">
+          <p id="reaction-header">Player reactions:</p>
+          <ol id="reaction-list"></ol>
+        </div>
       </div>
       <div class="buttons">
         <button
@@ -33,16 +42,20 @@
           Reset Current Round
         </button>
         <button
-          id="modeSwitcher"
+          id="button-mode"
           onclick="switchMode()">
-          Switch Mode to INPUT
+          Switch Mode to ANSWERS
+        </button>
+        <button
+          id="button-reveal"
+          onclick="revealAnswers()"
+          disabled>
+          Reveal Answers
         </button>
       </div>
-      <div class="buzz">
-        <p>buzzed players:</p>
-        <ol id="buzzer-list"></ol>
-      </div>
     </div>
+
+
   </body>
 
   <script src="/socket.io/socket.io.min.js"></script>
