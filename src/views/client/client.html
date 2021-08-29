@@ -16,34 +16,48 @@
       <div
         class="welcome"
         id="welcome">
-        <label for="name">
+        <label>
           Bitte Name eingeben.
         </label>
         <input type="text" id="playerName">
         <button 
           class="submitName"
           id="submitName"
-          onclick="setName(socket)">
+          onclick="setName()">
           Submit
         </button>
       </div>
-      <box
-        id=box>
-        Let's buzz it</box>
-      <button
-        class="button"
-        id="buzzer"
-        ontouchstart=""
-        onclick="buzz(socket)">
-      </button>
+      <div
+        class="buzz"
+        id="buzz">
+        <box
+          id=box>
+          Let's buzz it</box>
+        <button
+          class="button"
+          id="buzzer"
+          ontouchstart=""
+          onclick="buzz()">
+        </button>
+      </div>
+      <div
+        class="answerMode"
+        id="answerMode">
+        <label id='answerModeLabel'>
+          Bitte Antwort eingeben.
+        </label>
+        <textarea id="answer" cols="40" rows="5" autofocus required></textarea>
+        <button 
+          class="submitAnswer"
+          id="submitAnswer"
+          onclick="submitAnswer()">
+          Submit
+        </button>
+      </div>
     </div>
   </body>
 
   <script src="/socket.io/socket.io.min.js"></script>
   <script src="/client/client.js"></script>
-
-  <script>
-    let socket = io('/');
-  </script>
 
 </html>
