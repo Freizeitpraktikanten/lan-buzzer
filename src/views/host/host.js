@@ -10,7 +10,7 @@
 /**
  * @typedef Reaction
  * @type {object}
- * @property {string} name
+ * @property {string} playerName
  * @property {string} text
  * @property {number} timestamp
  */
@@ -36,13 +36,13 @@ const GAME_MODE = {
 };
 
 /**
- * Player list element
+ * Number of connected players
  * @type {Node}
  */
 const PLAYER_LIST_SUMMARY = document.querySelector('#player-summary');
 
 /**
- * Player list element
+ * list of all connected players
  * @type {Node}
  */
 const PLAYER_LIST = document.querySelector('#player-list');
@@ -54,7 +54,7 @@ const PLAYER_LIST = document.querySelector('#player-list');
 const REACTION_HEADER = document.querySelector('#reaction-header');
 
 /**
- * Reaction list element
+ * List of all player reactions
  * @type {Node}
  */
 const REACTION_LIST = document.querySelector('#reaction-list');
@@ -119,7 +119,7 @@ socket.on('buzz', (id) => {
   const player = players.find(p => p.id === id);
   console.info(`${player.name} just buzzed`);
   buzzerSound.play();
-  reactions.push({ name: player.name, timestamp: Date.now(), text: null });
+  reactions.push({ playerName: player.name, timestamp: Date.now(), text: null });
   socket.emit('updateClient', { id: player.id, status: PLAYER_STATUS.DISABLED, mode: gameMode, position: reactions.length });
   refresh();
 });
@@ -127,7 +127,7 @@ socket.on('buzz', (id) => {
 socket.on('message', (id, text) => {
   const player = players.find(p => p.id === id);
   console.info(`${player.name} just submitted an answer`);
-  reactions.push({ name: player.name, timestamp: Date.now(), text: text });
+  reactions.push({ playerName: player.name, timestamp: Date.now(), text: text });
   socket.emit('updateClient', { id: player.id, status: PLAYER_STATUS.DISABLED, mode: gameMode });
   refresh();
 });
@@ -164,13 +164,11 @@ function appendReactionToList(reaction, deltaT) {
   timeNode.innerText = time;
 
   if (hasText) {
-    listEntry.innerText = `${reaction.name}:\n${reaction.text}`.trim();
+    listEntry.innerText = `${reaction.playerName}:\n${reaction.text}`.trim();
   } else {
-    listEntry.innerHTML = `${reaction.name}&nbsp;`;
+    listEntry.innerHTML = `${reaction.playerName}&nbsp;`;
     listEntry.append(timeNode);
   }
-
-  // listEntry.innerText = `${reaction.name} ${hasText ? '\n' + reaction.text : time}`.trim();
 
   if (gameMode === GAME_MODE.ANSWERS) {
     listEntry.classList.add('blur');
