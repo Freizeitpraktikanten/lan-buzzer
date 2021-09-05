@@ -67,7 +67,7 @@ socket.onAny((event, ...args) => {
 });
 
 function setName() {
-  playerName = document.getElementById('playerName').value;
+  playerName = document.querySelector('#playerName').value;
   if (!playerName) {
     alert('Please enter a name!');
   } else {
