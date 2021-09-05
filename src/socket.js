@@ -27,6 +27,22 @@ const PLAYER_STATUS = {
   ENABLED: 1
 };
 
+const knownEventsClient = [
+  'disconnect',
+  'login',
+  'buzz',
+  'message'
+];
+
+const knownEventsHost = [
+  'disconnect',
+  'queryClients',
+  'getClient',
+  'updateClient',
+  'newRound',
+  'getServerIP'
+];
+
 //#endregion
 
 const logger = new Logger(process.env.NODE_ENV === 'dev' ? LogLevel.DEBUG : LogLevel.INFO);
@@ -57,11 +73,10 @@ module.exports = {
      * Confirm connection to host and send user name
      * Receive acknowledgment if successful
      */
-    socket.on('login', (playerName, ack) => {
+    socket.on('login', (playerName) => {
       client.name = playerName;
       logger.info(`User ${client.name} logged in`);
       hostNamespace.emit('clientLogin', client);
-      ack();
     });
 
     /**
@@ -84,7 +99,9 @@ module.exports = {
      * catch any event for debugging purposes
      */
     socket.onAny((event, ...args) => {
-      logger.debug(`Received ${event} from a client\n`, ...args);
+      if (!knownEventsClient.includes(event)) {
+        logger.debug(`Received ${event} from a client\n`, ...args);
+      }
     });
   },
 
@@ -155,7 +172,9 @@ module.exports = {
      * catch any event for debugging purposes
      */
     socket.onAny((event, ...args) => {
-      logger.debug(`Received ${event} from host\n`, ...args);
+      if (!knownEventsHost.includes(event)) {
+        logger.debug(`Received ${event} from host\n`, ...args);
+      }
     });
   }
 

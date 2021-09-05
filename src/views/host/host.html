@@ -7,17 +7,35 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='/style.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='/host/host.css'>
+
+    <script src="/socket.io/socket.io.min.js" defer></script>
+    <script src="/host/host.js" defer></script>
   </head>
 
   <body>
+    <h1>FZPT Buzzer</h1>
     <div class="container">
-      <h1>HOST</h1>
-      <div class="players">
-        <p>connected players:</p>
-        <ul id="player-list">
-        </ul>
-      </div>
-      <div class="buttons">
+      <section class="player-info">
+        <div>
+          <p>Connect to: <code id="ipContainer">loading...</code></p>
+        </div>
+
+        <div class="players">
+          <details>
+            <summary>
+              connected players: (<span id="player-summary">0</span>)
+            </summary>
+            <ul id="player-list"></ul>
+          </details>
+        </div>
+
+        <div class="reactions">
+          <p id="reaction-header">Player reactions:</p>
+          <ol id="reaction-list"></ol>
+        </div>
+      </section>
+
+      <section class="buttons">
         <button
           onclick="startNewRound()">
           Start New Round
@@ -27,19 +45,19 @@
           Reset Current Round
         </button>
         <button
-          id="modeSwitcher"
+          id="button-mode"
           onclick="switchMode()">
-          Switch Mode to INPUT
+          Switch Mode to ANSWERS
         </button>
-      </div>
-      <div class="buzz">
-        <p>buzzed players:</p>
-        <ol id="buzzer-list"></ol>
-      </div>
+        <button
+          id="button-reveal"
+          onclick="revealAnswers()"
+          disabled>
+          Reveal Answers
+        </button>
+      </section>
     </div>
-  </body>
 
-  <script src="/socket.io/socket.io.min.js"></script>
-  <script src="/host/host.js"></script>
+  </body>
 
 </html>
