@@ -153,11 +153,25 @@ function appendPlayerToList(name, id) {
  * @param {Reaction} reaction
  * @param {number} deltaT
  */
-function appenReactionToList(reaction, deltaT) {
+function appendReactionToList(reaction, deltaT) {
   const listEntry = document.createElement('li');
   const hasText = !!reaction.text;
-  const time = `${deltaT ? '(+' + deltaT + 'ms)' : ''}`;
-  listEntry.innerText = `${reaction.name} ${hasText ? '\n' + reaction.text : time}`.trim();
+  // transform deltaT to seconds
+  const deltaTs = (deltaT / 1000).toFixed(2);
+  const time = `${deltaT ? '(+' + deltaTs + 's)' : ''}`;
+  const timeNode = document.createElement('span');
+  timeNode.classList.add('time');
+  timeNode.innerText = time;
+
+  if (hasText) {
+    listEntry.innerText = `${reaction.name}:\n${reaction.text}`.trim();
+  } else {
+    listEntry.innerHTML = `${reaction.name}&nbsp;`;
+    listEntry.append(timeNode);
+  }
+
+  // listEntry.innerText = `${reaction.name} ${hasText ? '\n' + reaction.text : time}`.trim();
+
   if (gameMode === GAME_MODE.ANSWERS) {
     listEntry.classList.add('blur');
   }
@@ -173,6 +187,7 @@ function clearPlayerList() {
 
 /**
  * Remove all nodes from player list
+ * @param {boolean} clearReactionArray
  */
 function clearReactionList(clearReactionArray = false) {
   if (clearReactionArray) {
@@ -199,7 +214,7 @@ function refresh() {
   reactions
     .forEach(reaction => {
       const timeDiff = reaction.timestamp - baseTime;
-      appenReactionToList(reaction, timeDiff);
+      appendReactionToList(reaction, timeDiff);
     });
 }
 
