@@ -8,31 +8,39 @@
     <title>LAN Buzzer</title>
     <link rel='stylesheet' type='text/css' media='screen' href='/style.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='/client/client.css'>
+
+    <script src="/socket.io/socket.io.min.js" defer></script>
+    <script src="/client/client.js" defer></script>
   </head>
 
   <body>
     <div class="container">
-      <h1>CLIENT</h1>
+      <h1>FZPT Buzzer</h1>
       <div
         class="welcome"
         id="welcome">
-        <label>
-          Bitte Name eingeben.
+        <label for="playerName">
+          Bitte Name eingeben
         </label>
-        <input type="text" id="playerName">
-        <button 
+        <input
+          id="playerName"
+          autofocus>
+        <button
           class="submitName"
           id="submitName"
           onclick="setName()">
           Submit
         </button>
       </div>
+
       <div
-        class="buzz"
+        class="buzz-mode"
         id="buzz">
-        <box
+        <label
+          class="label"
           id=box>
-          Let's buzz it</box>
+          Let's buzz it!
+        </label>
         <button
           class="button"
           id="buzzer"
@@ -40,14 +48,18 @@
           onclick="buzz()">
         </button>
       </div>
+
       <div
-        class="answerMode"
+        class="answer-mode"
         id="answerMode">
-        <label id='answerModeLabel'>
+        <label
+          class="label"
+          id="answerModeLabel"
+          for="answer">
           Bitte Antwort eingeben.
         </label>
-        <textarea id="answer" cols="40" rows="5" autofocus required></textarea>
-        <button 
+        <textarea id="answer" rows="5" autofocus required></textarea>
+        <button
           class="submitAnswer"
           id="submitAnswer"
           onclick="submitAnswer()">
@@ -56,8 +68,5 @@
       </div>
     </div>
   </body>
-
-  <script src="/socket.io/socket.io.min.js"></script>
-  <script src="/client/client.js"></script>
 
 </html>

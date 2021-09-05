@@ -1,43 +1,52 @@
+:root {
+  --button-size: min(85vw, calc(100vh - 130px));
+}
+
 body {
   -webkit-user-select: none;
   user-select: none;
 }
 
+.container {
+  gap: 10px;
+}
+
 .welcome {
-  display:flex;
+  display: flex;
+  flex-flow: column nowrap;
   align-content: center;
+  align-items: center;
+  width: 100%;
+  font-size: 1.5rem;
 }
-.welcome input{
+
+.welcome input {
   font-size: 2rem;
-  margin-top: 10px;
-  margin-bottom: 25px;
+  margin: 10px 0px 25px 0px;
+  align-self: stretch; /* for some reason 'center' breaks the layout */
 }
-.submitName{
-  /*display:inline-block;*/
-  font-size: 2rem;
-  text-align: center;
+
+.submitName {
   width: 80%;
-  justify-content: center;
-  align-self: center;
-  padding: 0;
-}
-
-.answerMode {
-  display:flex;
-  align-content: center;
-  visibility: hidden;
-}
-
-.answerMode textarea{
   font-size: 2rem;
-  margin-top: 10px;
-  margin-bottom: 25px;
-  -webkit-user-select:text;
+}
+
+.answer-mode {
+  display: none;
+  align-content: center;
+  flex-flow: column nowrap;
+  max-width: 100%;
+}
+
+.answer-mode textarea {
+  font-size: 2rem;
+  margin: 10px 0px 25px 0px;
+  -webkit-user-select: text;
   user-select: text;
+  resize: none;
 }
 
-.submitAnswer{
-  /*display:inline-block;*/
+.submitAnswer {
   font-size: 2rem;
   text-align: center;
   width: 80%;
@@ -46,33 +55,32 @@ body {
   padding: 0;
 }
 
-.buzz {
-  visibility: hidden;
+.buzz-mode {
+  display: none;
+  flex-flow: column nowrap;
+  gap: 10px;
+  width: 100%;
 }
 
 .button {
-  display: flex;
+  align-self: center;
+  width: var(--button-size);
+  height: var(--button-size);
   border-radius: 100%;
+  font-size: 3rem;
   color: black;
-  font-size:300%;
   background-color: rgb(255, 0, 0);
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0px 0px 8px 15px rgba(0,0,0,0.2), 0 0px 20px 5px rgba(0,0,0,0.19);
-  padding: 10%;
-  transform: scale(1);
+  box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.2), 0px 0px 20px 5px rgba(0, 0, 0, 0.2);
   touch-action: manipulation;
 }
 
 .button:active {
-  -ms-transform: scale(0.9);
-  -webkit-transform: scale(0.9);
-  transform:scale(0.9);
-  box-shadow:none;
-  /*background-color: green;
-  box-shadow: 0 0px 16px 22px rgba(0,0,0,0.2), 0 6px 20px 10px rgba(0,0,0,0.19);
-  transform: translateY(4px);*/
+  -ms-transform: scale(0.95);
+  -webkit-transform: scale(0.95);
+  transform: scale(0.95);
+  box-shadow: none;
 }
+
 .button:disabled {
   background-color: grey;
   box-shadow: none;
@@ -81,59 +89,19 @@ body {
 .button:active:disabled {
   -ms-transform: scale(1);
   -webkit-transform: scale(1);
-  transform:scale(1);
+  transform: scale(1);
 }
 
-box {
-  display:flex;
-  align-items: center;
-  justify-content: center;
+.label {
   border: 2px solid black;
-  align-items: center;
-  font-size: 1.8rem;
-}
-
-@media (orientation: portrait) {
-  .button {
-    /*width: 90vw;*/
-    position: absolute;
-    top: 25%;
-    left:7.5%;
-    width:85%;
-    height: 85vw;
-  }
-  box{
-    position:absolute;
-    top: 10%;
-    left:19%;
-    width:65%;
-    height: 15vw;
-  }
-  .welcome{
-    width: 100%;
-    font-size: 1.5rem;
-    flex-flow: column nowrap;
-  }
-  .answerMode{
-    width: 100%;
-    font-size: 1.5rem;
-    flex-flow: column nowrap;
-  }
-  /*.name{
-
-  }*/
+  border-radius: 5px;
+  font-size: 1.5rem;
+  text-align: center;
+  padding: 5px;
 }
 
 @media (orientation: landscape) {
-  .button {
-    /*width: calc(90vh - 40px);*/
-    position: absolute;
-    left: 25%;
-    width: 33.33%;
-    height: 33.33%/*calc(90vh - 40px);*/
+  .welcome {
+    width: 50%;
   }
-}
-
-p.buttonText {
-  font-size: 4rem;
 }
