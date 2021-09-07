@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 
 // serve host dashboard
 app.get('/host', (req, res) => {
-  res.sendFile(path.join(__dirname, '/views/host/host.html'));
+  res.sendFile(path.join(__dirname, 'views/host/host.html'));
 });
 
 // socket communication
