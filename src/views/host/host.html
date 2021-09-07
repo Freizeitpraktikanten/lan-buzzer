@@ -5,10 +5,11 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>LAN Buzzer - Host Dashboard</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='/style.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/shared/style.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='/host/host.css'>
 
     <script src="/socket.io/socket.io.min.js" defer></script>
+    <script src="/host/qrcode.min.js"></script>
     <script src="/host/host.js" defer></script>
   </head>
 
@@ -17,7 +18,12 @@
     <div class="container">
       <section class="player-info">
         <div>
-          <p>Connect to: <code id="ipContainer">loading...</code></p>
+          <details>
+            <summary>
+              <span>Connect to: <code class="ip-container" id="ip-container">loading...</code></span>
+            </summary>
+            <div class="qrcode" id="qrcode"></div>
+          </details>
         </div>
 
         <div class="players">
