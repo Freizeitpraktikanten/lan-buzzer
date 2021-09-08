@@ -1,3 +1,4 @@
+const open = require('open');
 const path = require('path');
 const { clientHandler, hostHandler } = require('./socket');
 
@@ -16,6 +17,8 @@ if (args.length >= 3 && args[2].startsWith('port')) {
   const customPort = args[2].split('=').pop();
   port = !isNaN(customPort) ? customPort : port;
 }
+
+const address = `http://localhost${port ? ':' + port : ''}`;
 
 
 // serve static content
@@ -47,5 +50,8 @@ hostNamespace.on('connection', (socket) => {
 
 
 httpServer.listen(port, () => {
-  console.info(`listening on localhost:${port}`);
+  console.info(`listening on ${address}`);
 });
+
+// open new window
+open(`${address}/host`);
