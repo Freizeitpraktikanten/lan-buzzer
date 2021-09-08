@@ -36,6 +36,18 @@ const GAME_MODE = {
 };
 
 /**
+ * Span to hold the IP of the server
+ * @type {Node}
+ */
+const IP_CONTAINER = document.querySelector('#ip-container');
+
+/**
+ * The QRCode destination
+ * @type {Node}
+ */
+const QRCODE = document.querySelector('#qrcode');
+
+/**
  * Number of connected players
  * @type {Node}
  */
@@ -94,7 +106,13 @@ let gameMode = GAME_MODE.BUZZER;
 // query for any connected clients on startup
 socket.emit('queryClients');
 // get servers local IP address
-socket.emit('getServerIP', (ip) => document.querySelector('#ipContainer').innerText = `${ip}${port ? ':' + port : ''}`);
+socket.emit('getServerIP', (ip) => {
+  const address = `${ip}${port ? ':' + port : ''}`;
+  IP_CONTAINER.innerText = address;
+
+  /* global QRCode */
+  new QRCode(QRCODE, `http://${address}`);
+});
 
 socket.on('clientConnect', (id) => {
   console.debug(`${id} connected`);

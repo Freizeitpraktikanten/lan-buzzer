@@ -2,12 +2,22 @@ p {
   margin: 0.5rem 0;
 }
 
-#ipContainer {
-  font-size: 1.25rem;
+details {
+  margin: 0.25rem 0;
 }
 
 .container {
   height: calc(100% - (47px));
+}
+
+.ip-container {
+  font-size: 1.25rem;
+}
+
+.qrcode {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
 }
 
 .player-info {
@@ -20,7 +30,7 @@ p {
 }
 
 .players {
-  margin: 0.5rem 0;
+  align-self: flex-start;
 }
 
 .reactions {
@@ -68,7 +78,6 @@ button:active {
 @media (orientation: portrait) and (max-width: 768px) {
   .container {
     justify-content: space-between;
-    align-items: stretch;
   }
 
   .player-info {
@@ -77,6 +86,7 @@ button:active {
 
   .buttons {
     flex-flow: column nowrap;
+    align-self: stretch;
     gap: 10px;
     order: 0;
     margin: 0;
