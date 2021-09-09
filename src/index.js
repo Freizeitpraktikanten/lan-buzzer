@@ -54,4 +54,6 @@ httpServer.listen(port, () => {
 });
 
 // open new window
-open(`${address}/host`);
+if (process.env.NODE_ENV !== 'dev') {
+  open(`${address}/host`);
+}
