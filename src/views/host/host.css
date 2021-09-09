@@ -70,6 +70,10 @@ button:active {
   box-shadow: 2px 2px 3px 0px #00000040;
 }
 
+#button-reveal {
+  display: none;
+}
+
 .blur {
   filter: blur(4px);
   /* padding-right: 5px; */

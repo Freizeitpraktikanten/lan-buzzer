@@ -72,6 +72,13 @@ const REACTION_HEADER = document.querySelector('#reaction-header');
 const REACTION_LIST = document.querySelector('#reaction-list');
 
 /**
+ * Button to reset the current round
+ * @type {Node}
+ */
+
+const BUTTON_RESET = document.querySelector('#button-reset');
+
+/**
  * Button to switch the game mode
  * @type {Node}
  */
@@ -258,7 +265,8 @@ function switchMode() {
       gameMode = GAME_MODE.BUZZER;
       break;
   }
-  BUTTON_REVEAL.disabled = gameMode === GAME_MODE.BUZZER;
+  BUTTON_REVEAL.style.display = gameMode === GAME_MODE.BUZZER ? 'none' : 'inline-block';
+  BUTTON_RESET.style.display = gameMode === GAME_MODE.ANSWERS ? 'none' : 'inline-block';
   socket.emit('newRound', gameMode);
   BUTTON_MODE.innerText = `Switch Mode to ${gameMode === GAME_MODE.BUZZER ? 'ANSWERS' : 'BUZZER'}`;
   clearReactionList(true);
@@ -270,4 +278,5 @@ function revealAnswers() {
   blurredAnswers.forEach(node => {
     node.classList.remove('blur');
   });
+  socket.emit('', {});
 }
