@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Freizeitpraktikanten/lan-buzzer#readme",
   "dependencies": {
     "express": "^4.17.1",
+    "open": "^8.2.1",
     "socket.io": "^4.0.1"
   },
   "devDependencies": {
