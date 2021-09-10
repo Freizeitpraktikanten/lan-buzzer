@@ -190,7 +190,7 @@ function appendReactionToList(reaction, deltaT) {
   }
 
   if (gameMode === GAME_MODE.ANSWERS) {
-    listEntry.classList.add('blur');
+    listEntry.classList.add('blur', 'ellipsis');
   }
   REACTION_LIST.append(listEntry);
 }
@@ -271,7 +271,7 @@ function switchMode() {
 function revealAnswers() {
   const blurredAnswers = document.querySelectorAll('.blur');
   blurredAnswers.forEach(node => {
-    node.classList.remove('blur');
+    node.classList.remove('blur', 'ellipsis');
   });
   socket.emit('updateClients', { status: PLAYER_STATUS.DISABLED });
 }

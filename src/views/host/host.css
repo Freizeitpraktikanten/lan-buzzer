@@ -25,6 +25,7 @@ details {
   flex-flow: column nowrap;
   align-items: stretch;
   min-width: 300px;
+  max-width: 75%;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -39,9 +40,20 @@ details {
   overflow-y: auto;
 }
 
+.reaction-header {
+  font-weight: bold;
+}
+
 ol > li {
   margin-bottom: 0.5rem;
   padding-right: 8px;
+}
+
+.ellipsis {
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .time {
@@ -76,7 +88,6 @@ button:active {
 
 .blur {
   filter: blur(4px);
-  /* padding-right: 5px; */
 }
 
 @media (orientation: portrait) and (max-width: 768px) {
