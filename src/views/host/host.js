@@ -37,56 +37,46 @@ const GAME_MODE = {
 
 /**
  * Span to hold the IP of the server
- * @type {Node}
  */
 const IP_CONTAINER = document.querySelector('#ip-container');
 
 /**
  * The QRCode destination
- * @type {Node}
  */
 const QRCODE = document.querySelector('#qrcode');
 
 /**
  * Number of connected players
- * @type {Node}
  */
 const PLAYER_LIST_SUMMARY = document.querySelector('#player-summary');
 
 /**
  * list of all connected players
- * @type {Node}
  */
 const PLAYER_LIST = document.querySelector('#player-list');
 
 /**
  * Reaction list header
- * @type {Node}
  */
 const REACTION_HEADER = document.querySelector('#reaction-header');
 
 /**
  * List of all player reactions
- * @type {Node}
  */
 const REACTION_LIST = document.querySelector('#reaction-list');
 
 /**
  * Button to reset the current round
- * @type {Node}
  */
-
 const BUTTON_RESET = document.querySelector('#button-reset');
 
 /**
  * Button to switch the game mode
- * @type {Node}
  */
 const BUTTON_MODE = document.querySelector('#button-mode');
 
 /**
  * Button to reveal blurred answers
- * @type {Node}
  */
 const BUTTON_REVEAL = document.querySelector('#button-reveal');
 
