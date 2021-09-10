@@ -111,6 +111,8 @@ socket.emit('getServerIP', (ip) => {
   new QRCode(QRCODE, `http://${address}`);
 });
 
+//#region socket events
+
 socket.on('clientConnect', (id) => {
   console.debug(`${id} connected`);
   socket.emit('getClient', id);
@@ -150,6 +152,8 @@ socket.on('message', (id, text) => {
 socket.onAny((event, ...args) => {
   console.debug(`received event: ${event}`, ...args);
 });
+
+//#endregion
 
 /**
  * Add player name to list
