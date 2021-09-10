@@ -166,7 +166,7 @@ function appendPlayerToList(name, id) {
 /**
  * Add player name to list
  * @param {Reaction} reaction
- * @param {number} deltaT
+ * @param {number} [deltaT]
  */
 function appendReactionToList(reaction, deltaT) {
   const listEntry = document.createElement('li');
