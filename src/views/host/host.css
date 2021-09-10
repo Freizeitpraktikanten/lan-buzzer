@@ -23,7 +23,7 @@ details {
 .player-info {
   display: flex;
   flex-flow: column nowrap;
-  align-items: center;
+  align-items: stretch;
   min-width: 300px;
   overflow-x: hidden;
   overflow-y: auto;
@@ -82,10 +82,6 @@ button:active {
 @media (orientation: portrait) and (max-width: 768px) {
   .container {
     justify-content: space-between;
-  }
-
-  .player-info {
-    align-items: stretch;
   }
 
   .buttons {
