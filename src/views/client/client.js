@@ -135,7 +135,6 @@ function refresh() {
       BUZZER_BUTTON.disabled = true;
       ANSWER_BOX.disabled = true;
       ANSWER_SUBMIT.disabled = true;
-      ANSWER_LABEL.innerText = 'Antwort gesendet';
       break;
   }
 

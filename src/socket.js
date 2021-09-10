@@ -39,6 +39,7 @@ const knownEventsHost = [
   'queryClients',
   'getClient',
   'updateClient',
+  'updateClients',
   'newRound',
   'getServerIP'
 ];
@@ -137,6 +138,14 @@ module.exports = {
       logger.debug(payload);
       const client = clientNamespace.sockets.get(payload.id);
       client.emit('updateClient', { status: payload.status, mode: payload.mode, position: payload.position });
+    });
+
+    /**
+     * udpate a single clients player status
+     */
+    socket.on('updateClients', (payload) => {
+      logger.debug(payload);
+      clientNamespace.emit('updateClient', { status: payload.status });
     });
 
     /**

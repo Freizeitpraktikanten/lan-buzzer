@@ -265,6 +265,7 @@ function switchMode() {
       gameMode = GAME_MODE.BUZZER;
       break;
   }
+  BUTTON_REVEAL.disabled = gameMode === GAME_MODE.BUZZER;
   BUTTON_REVEAL.style.display = gameMode === GAME_MODE.BUZZER ? 'none' : 'inline-block';
   BUTTON_RESET.style.display = gameMode === GAME_MODE.ANSWERS ? 'none' : 'inline-block';
   socket.emit('newRound', gameMode);
@@ -278,5 +279,5 @@ function revealAnswers() {
   blurredAnswers.forEach(node => {
     node.classList.remove('blur');
   });
-  socket.emit('', {});
+  socket.emit('updateClients', { status: PLAYER_STATUS.DISABLED });
 }
