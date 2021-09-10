@@ -51,7 +51,6 @@ socket.on('queryClients', () => {
 });
 
 socket.on('updateClient', (payload) => {
-  console.debug(payload);
   playerStatus = payload.status;
   gameMode = payload.mode;
   position = payload.position;
@@ -106,7 +105,6 @@ function submitAnswer() {
   if (answer.length > 0) {
     console.debug('Submitted', answer);
     socket.emit('message', answer);
-    ANSWER_LABEL.innerText = 'Antwort gesendet';
   } else {
     ANSWER_LABEL.innerText = 'Keine leeren Antworten erlaubt';
   }
