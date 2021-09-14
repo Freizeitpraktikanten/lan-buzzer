@@ -1,5 +1,12 @@
 //#region typedefs/const
 
+/**
+ * @typedef Player
+ * @type {object}
+ * @property {string} name
+ * @property {string} id
+ */
+
 const BUZZ_MODE = document.querySelector('#buzz');
 const BUZZER_BUTTON = document.querySelector('#buzzer');
 const WELCOME_PAGE = document.querySelector('#welcome');
@@ -35,19 +42,24 @@ const PLAYER_STATUS = {
 let socket = io('/');
 let playerStatus = PLAYER_STATUS.ENABLED;
 let gameMode = GAME_MODE.BUZZER;
+/** @type {number} */
 let position = null;
-let playerName = null;
+/** @type {Player} */
+let user = {};
 
 /**
- * load player name from localstorage
+ * load player from localstorage
  */
-const nameFromStorage = localStorage.getItem('userName');
-if (nameFromStorage) {
-  document.querySelector('#playername').value = nameFromStorage;
+/** @type {Player} */
+const userFromStorage = JSON.parse(localStorage.getItem('user'));
+if (userFromStorage) {
+  document.querySelector('#playername').value = userFromStorage.name;
 }
 
 socket.on('queryClients', () => {
-  if (playerName) { socket.emit('login', playerName); }
+  if (user?.id) {
+    socket.emit('login', user);
+  }
 });
 
 socket.on('updateClient', (payload) => {
@@ -66,12 +78,13 @@ socket.onAny((event, ...args) => {
 });
 
 function setName() {
-  playerName = document.querySelector('#playerName').value;
-  if (!playerName) {
+  user.name = document.querySelector('#playerName').value;
+  if (!user.name) {
     alert('Please enter a name!');
   } else {
-    localStorage.setItem('userName', playerName);
-    socket.emit('login', playerName);
+    user.id = userFromStorage?.id ?? generateRandomId();
+    localStorage.setItem('user', JSON.stringify(user));
+    socket.emit('login', user);
   }
 }
 
@@ -144,4 +157,13 @@ function refresh() {
       showAnswerMode();
       break;
   }
+}
+
+/**
+ * Returns a random alphanumerical id
+ *
+ * Format: `/[a-zA-Z0-9]{8}/`
+ */
+function generateRandomId() {
+  return Math.random().toString(36).replace('0.', '').substr(0, 8);
 }
