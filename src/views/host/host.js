@@ -5,6 +5,8 @@
  * @type {object}
  * @property {string} name
  * @property {string} id
+ * @property {number} score
+ * @property {string} sessionId
  */
 
 /**
@@ -35,6 +37,14 @@ const GAME_MODE = {
   ANSWERS: 1
 };
 
+const knownEvents = [
+  'buzz',
+  'clientConnect',
+  'clientDisconnect',
+  'clientLogin',
+  'message'
+];
+
 /**
  * Span to hold the IP of the server
  */
@@ -53,7 +63,8 @@ const PLAYER_LIST_SUMMARY = document.querySelector('#player-summary');
 /**
  * list of all connected players
  */
-const PLAYER_LIST = document.querySelector('#player-list');
+const PLAYER_TABLE = document.querySelector('#player-table');
+const TABLE_BODY = document.querySelector('#table-body');
 
 /**
  * Reaction list header
@@ -87,7 +98,7 @@ const port = location.port;
 //#endregion
 
 
-// create socket on 'host' namespace
+// create socket on '/host' namespace
 /* global io */
 const socket = io('/host');
 
@@ -113,22 +124,21 @@ socket.emit('getServerIP', (ip) => {
 
 //#region socket events
 
-socket.on('clientConnect', (id) => {
-  console.debug(`${id} connected`);
-  socket.emit('getClient', id);
+socket.on('clientConnect', (sessionId) => {
+  console.debug(`${sessionId} connected`);
+  socket.emit('getClient', sessionId);
 });
 
-socket.on('clientDisconnect', (name) => {
-  console.debug(`${name} disconnected`);
-  const userIndex = players.findIndex(p => p.id === name);
-  players.splice(userIndex, 1);
+socket.on('clientDisconnect', (sessionId) => {
+  console.debug(`${sessionId} disconnected`);
+  removePlayer(sessionId);
   refresh();
 });
 
 socket.on('clientLogin', (player) => {
   console.info(`${player.name} logged in`);
-  players.push({ name: player.name, id: player.id });
-  socket.emit('updateClient', { id: player.id, status: PLAYER_STATUS.DISABLED, mode: gameMode });
+  addPlayer(player);
+  socket.emit('updateClient', { sessionId: player.sessionId, status: PLAYER_STATUS.DISABLED, mode: gameMode });
   refresh();
 });
 
@@ -137,7 +147,7 @@ socket.on('buzz', (id) => {
   console.info(`${player.name} just buzzed`);
   buzzerSound.play();
   reactions.push({ playerName: player.name, timestamp: Date.now(), text: null });
-  socket.emit('updateClient', { id: player.id, status: PLAYER_STATUS.DISABLED, mode: gameMode, position: reactions.length });
+  socket.emit('updateClient', { sessionId: player.sessionId, status: PLAYER_STATUS.DISABLED, mode: gameMode, position: reactions.length });
   refresh();
 });
 
@@ -145,26 +155,70 @@ socket.on('message', (id, text) => {
   const player = players.find(p => p.id === id);
   console.info(`${player.name} just submitted an answer`);
   reactions.push({ playerName: player.name, timestamp: Date.now(), text: text });
-  socket.emit('updateClient', { id: player.id, status: PLAYER_STATUS.DISABLED, mode: gameMode });
+  socket.emit('updateClient', { sessionId: player.sessionId, status: PLAYER_STATUS.DISABLED, mode: gameMode });
   refresh();
 });
 
 socket.onAny((event, ...args) => {
-  console.debug(`received event: ${event}`, ...args);
+  if (!knownEvents.includes(event)) {
+    console.debug(`received event: ${event}`, ...args);
+  }
 });
 
 //#endregion
 
 /**
- * Add player name to list
- * @param {string} name
- * @param {string} id
+ * Add player to local array, read score from localstorage if available
+ * @param {Player} player
  */
-function appendPlayerToList(name, id) {
-  const listEntry = document.createElement('li');
-  listEntry.innerText = name;
-  listEntry.setAttribute('id', id);
-  PLAYER_LIST.append(listEntry);
+function addPlayer(player) {
+  /** @type {Array<Player>} */
+  const playerFromStorage = JSON.parse(localStorage.getItem(`player_${player.id}`));
+  const tempPlayer = {
+    id: player.id,
+    sessionId: player.sessionId,
+    score: playerFromStorage?.score ?? 0,
+    name: player.name
+  };
+  players.push(tempPlayer);
+  localStorage.setItem(`player_${player.id}`, JSON.stringify(tempPlayer));
+  return;
+}
+
+/**
+ * @param {string} sessionId
+ */
+function removePlayer(sessionId) {
+  const userIndex = players.findIndex(p => p.sessionId === sessionId);
+  players.splice(userIndex, 1);
+  return;
+}
+
+/**
+ * Add player name to list
+ * @param {Player} player
+ */
+function appendPlayerToList(player) {
+  const tableRow = document.createElement('tr');
+  tableRow.setAttribute('id', player.id);
+  const nameCell = document.createElement('td');
+  const scoreCell = document.createElement('td');
+  nameCell.innerText = player.name;
+  scoreCell.innerText = player.score;
+
+  const buttonCell = document.createElement('td');
+  buttonCell.classList.add('score-buttons');
+  const plusButton = document.createElement('button');
+  plusButton.innerText = '+';
+  plusButton.setAttribute('onclick', `updateScore('${player.id}', 1)`);
+  const minusButton = document.createElement('button');
+  minusButton.innerText = '-';
+  minusButton.setAttribute('onclick', `updateScore('${player.id}', -1)`);
+  buttonCell.append(plusButton, minusButton);
+
+  tableRow.append(nameCell, scoreCell, buttonCell);
+  TABLE_BODY.append(tableRow);
+  return;
 }
 
 /**
@@ -174,19 +228,18 @@ function appendPlayerToList(name, id) {
  */
 function appendReactionToList(reaction, deltaT) {
   const listEntry = document.createElement('li');
-  const hasText = !!reaction.text;
   // transform deltaT to seconds
   const deltaTs = (deltaT / 1000).toFixed(2);
   const time = `${deltaT ? '(+' + deltaTs + 's)' : ''}`;
-  const timeNode = document.createElement('span');
-  timeNode.classList.add('time');
-  timeNode.innerText = time;
+  const timeElement = document.createElement('span');
+  timeElement.classList.add('time');
+  timeElement.innerText = time;
 
-  if (hasText) {
+  if (reaction.text) {
     listEntry.innerText = `${reaction.playerName}:\n${reaction.text}`.trim();
   } else {
     listEntry.innerHTML = `${reaction.playerName}&nbsp;`;
-    listEntry.append(timeNode);
+    listEntry.append(timeElement);
   }
 
   if (gameMode === GAME_MODE.ANSWERS) {
@@ -199,7 +252,7 @@ function appendReactionToList(reaction, deltaT) {
  * Remove all nodes from player list
  */
 function clearPlayerList() {
-  PLAYER_LIST.textContent = '';
+  TABLE_BODY.textContent = '';
 }
 
 /**
@@ -221,13 +274,14 @@ function refresh() {
   clearPlayerList();
   players
     .sort((a, b) => a.name.localeCompare(b.name))
-    .forEach(({ name, id }) => {
-      appendPlayerToList(name, id);
+    .forEach(player => {
+      localStorage.setItem(`player_${player.id}`, JSON.stringify(player));
+      appendPlayerToList(player);
     });
   PLAYER_LIST_SUMMARY.innerText = players.length;
 
   clearReactionList();
-  const baseTime = reactions[0] && reactions[0].timestamp;
+  const baseTime = reactions[0]?.timestamp;
   reactions
     .forEach(reaction => {
       const timeDiff = reaction.timestamp - baseTime;
@@ -259,7 +313,6 @@ function switchMode() {
       gameMode = GAME_MODE.BUZZER;
       break;
   }
-  BUTTON_REVEAL.disabled = gameMode === GAME_MODE.BUZZER;
   BUTTON_REVEAL.style.display = gameMode === GAME_MODE.BUZZER ? 'none' : 'inline-block';
   BUTTON_RESET.style.display = gameMode === GAME_MODE.ANSWERS ? 'none' : 'inline-block';
   socket.emit('newRound', gameMode);
@@ -274,4 +327,16 @@ function revealAnswers() {
     node.classList.remove('blur', 'ellipsis');
   });
   socket.emit('updateClients', { status: PLAYER_STATUS.DISABLED });
+}
+
+/**
+ * 
+ * @param {string} playerId 
+ * @param {number} score 
+ */
+function updateScore(playerId, score) {
+  players
+    .find(p => p.id === playerId)
+    .score += score;
+  refresh();
 }

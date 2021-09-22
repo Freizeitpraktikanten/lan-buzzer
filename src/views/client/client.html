@@ -1,13 +1,15 @@
 <html>
 
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <meta name="viewport"
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta
+      name="viewport"
       content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
     <title>LAN Buzzer</title>
-    <link rel='stylesheet' type='text/css' media='screen' href='/shared/style.css'>
-    <link rel='stylesheet' type='text/css' media='screen' href='/client/client.css'>
+    <link rel="shortcut icon" type="image/x-icon" href="/shared/favicon.png">
+    <link rel="stylesheet" type="text/css" media="screen" href="/shared/style.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="/client/client.css">
 
     <script src="/socket.io/socket.io.min.js" defer></script>
     <script src="/client/client.js" defer></script>
@@ -16,15 +18,11 @@
   <body>
     <div class="container">
       <h1>FZPT Buzzer</h1>
-      <div
-        class="welcome"
-        id="welcome">
-        <label for="playerName">
+      <div class="welcome" id="welcome">
+        <label for="playerName" for="submitName">
           Bitte Name eingeben
         </label>
-        <input
-          id="playerName"
-          autofocus>
+        <input id="playerName" autofocus>
         <button
           class="submitName"
           id="submitName"
@@ -33,12 +31,8 @@
         </button>
       </div>
 
-      <div
-        class="buzz-mode"
-        id="buzz">
-        <label
-          class="label"
-          id=box>
+      <div class="buzz-mode" id="buzz">
+        <label class="label" id=box for="buzzer">
           Let's buzz it!
         </label>
         <button
@@ -49,9 +43,7 @@
         </button>
       </div>
 
-      <div
-        class="answer-mode"
-        id="answerMode">
+      <div class="answer-mode" id="answerMode">
         <label
           class="label"
           id="answerModeLabel"
