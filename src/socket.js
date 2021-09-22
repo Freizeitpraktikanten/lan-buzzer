@@ -8,6 +8,7 @@ const { networkInterfaces } = require('os');
  * @type {object}
  * @property {string} name
  * @property {string} id
+ * @property {string} sessionId
  */
 
 /**
@@ -39,6 +40,7 @@ const knownEventsHost = [
   'queryClients',
   'getClient',
   'updateClient',
+  'updateClients',
   'newRound',
   'getServerIP'
 ];
@@ -56,10 +58,11 @@ module.exports = {
     /** @type {Player} */
     const client = {
       name: '',
-      id: socket.id
+      id: null,
+      sessionId: socket.id
     };
-    logger.info(`Client connected: ${client.id}`);
-    hostNamespace.emit('clientConnect', client.id);
+    logger.info(`Client connected: ${client.sessionId}`);
+    hostNamespace.emit('clientConnect', client.sessionId);
 
     /**
      * Sign off from host
@@ -73,8 +76,9 @@ module.exports = {
      * Confirm connection to host and send user name
      * Receive acknowledgment if successful
      */
-    socket.on('login', (playerName) => {
-      client.name = playerName;
+    socket.on('login', (user) => {
+      client.name = user.name;
+      client.id = user.id;
       logger.info(`User ${client.name} logged in`);
       hostNamespace.emit('clientLogin', client);
     });
@@ -135,8 +139,16 @@ module.exports = {
      */
     socket.on('updateClient', (payload) => {
       logger.debug(payload);
-      const client = clientNamespace.sockets.get(payload.id);
+      const client = clientNamespace.sockets.get(payload.sessionId);
       client.emit('updateClient', { status: payload.status, mode: payload.mode, position: payload.position });
+    });
+
+    /**
+     * udpate a single clients player status
+     */
+    socket.on('updateClients', (payload) => {
+      logger.debug(payload);
+      clientNamespace.emit('updateClient', { status: payload.status });
     });
 
     /**

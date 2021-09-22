@@ -1,12 +1,13 @@
 <html>
 
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>LAN Buzzer - Host Dashboard</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='/shared/style.css'>
-    <link rel='stylesheet' type='text/css' media='screen' href='/host/host.css'>
+    <link rel="shortcut icon" type="image/x-icon" href="/shared/favicon.png">
+    <link rel="stylesheet" type="text/css" media="screen" href="/shared/style.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="/host/host.css">
 
     <script src="/socket.io/socket.io.min.js" defer></script>
     <script src="/host/qrcode.min.js"></script>
@@ -31,35 +32,46 @@
             <summary>
               connected players: (<span id="player-summary">0</span>)
             </summary>
-            <ul id="player-list"></ul>
+
+            <table class="player-table" id="player-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Score</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="table-body"></tbody>
+            </table>
           </details>
         </div>
 
         <div class="reactions">
-          <p id="reaction-header">Player reactions:</p>
+          <p class="reaction-header" id="reaction-header">Player reactions:</p>
           <ol id="reaction-list"></ol>
         </div>
       </section>
 
       <section class="buttons">
         <button
+          id="button-new-round"
           onclick="startNewRound()">
           Start New Round
         </button>
         <button
+          id="button-reset"
           onclick="resetCurrentRound()">
           Reset Current Round
+        </button>
+        <button
+          id="button-reveal"
+          onclick="revealAnswers()">
+          Reveal Answers
         </button>
         <button
           id="button-mode"
           onclick="switchMode()">
           Switch Mode to ANSWERS
-        </button>
-        <button
-          id="button-reveal"
-          onclick="revealAnswers()"
-          disabled>
-          Reveal Answers
         </button>
       </section>
     </div>

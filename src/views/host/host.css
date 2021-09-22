@@ -1,3 +1,5 @@
+@import 'table.css';
+
 p {
   margin: 0.5rem 0;
 }
@@ -23,8 +25,9 @@ details {
 .player-info {
   display: flex;
   flex-flow: column nowrap;
-  align-items: center;
+  align-items: stretch;
   min-width: 300px;
+  max-width: 75%;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -39,9 +42,20 @@ details {
   overflow-y: auto;
 }
 
+.reaction-header {
+  font-weight: bold;
+}
+
 ol > li {
   margin-bottom: 0.5rem;
   padding-right: 8px;
+}
+
+.ellipsis {
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .time {
@@ -70,18 +84,17 @@ button:active {
   box-shadow: 2px 2px 3px 0px #00000040;
 }
 
+#button-reveal {
+  display: none;
+}
+
 .blur {
   filter: blur(4px);
-  /* padding-right: 5px; */
 }
 
 @media (orientation: portrait) and (max-width: 768px) {
   .container {
     justify-content: space-between;
-  }
-
-  .player-info {
-    align-items: stretch;
   }
 
   .buttons {
