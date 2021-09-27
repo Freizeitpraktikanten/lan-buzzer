@@ -287,6 +287,10 @@ function refresh() {
       const timeDiff = reaction.timestamp - baseTime;
       appendReactionToList(reaction, timeDiff);
     });
+
+  if (reactions.length === players.length) {
+    REACTION_HEADER.innerText += ' ✔';
+  }
 }
 
 /**
