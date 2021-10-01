@@ -91,6 +91,11 @@ const BUTTON_MODE = document.querySelector('#button-mode');
  */
 const BUTTON_REVEAL = document.querySelector('#button-reveal');
 
+/**
+ * Button to clear local storage
+ */
+const BUTTON_RESET_STORAGE = document.querySelector('#button-reset-storage');
+
 const buzzerSound = new Audio('./buzzer.mp3');
 
 const port = location.port;
@@ -287,6 +292,10 @@ function refresh() {
       const timeDiff = reaction.timestamp - baseTime;
       appendReactionToList(reaction, timeDiff);
     });
+
+  if (players.length > 0 && reactions.length === players.length) {
+    REACTION_HEADER.innerText += ' ✔';
+  }
 }
 
 /**
@@ -339,4 +348,15 @@ function updateScore(playerId, score) {
     .find(p => p.id === playerId)
     .score += score;
   refresh();
+}
+
+/**
+ * Reset all points and clear localstorage
+ */
+function clearStorage() {
+  if (confirm('You sure?')) {
+    players.forEach(p => p.score = 0);
+    localStorage.clear();
+    refresh();
+  }
 }

@@ -137,6 +137,7 @@ function refresh() {
       BUZZER_BUTTON.disabled = false;
       ANSWER_BOX.disabled = false;
       ANSWER_SUBMIT.disabled = false;
+      ANSWER_SUBMIT.innerText = 'Submit';
       ANSWER_LABEL.innerText = 'Bitte Antwort eingeben';
       ANSWER_BOX.value = '';
       STATUS_BOX.innerText = 'Let\'s buzz it!';
@@ -146,6 +147,7 @@ function refresh() {
       BUZZER_BUTTON.disabled = true;
       ANSWER_BOX.disabled = true;
       ANSWER_SUBMIT.disabled = true;
+      ANSWER_SUBMIT.innerText = 'Sent';
       break;
   }
 
